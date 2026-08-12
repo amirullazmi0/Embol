@@ -4,7 +4,9 @@
       "Bash(npm --version)",
       "Bash(npm install *)",
       "Bash(npm run *)",
-      "PowerShell($c = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue; foreach \\($p in \\($c.OwningProcess | Select-Object -Unique\\)\\) { $proc = Get-Process -Id $p -ErrorAction SilentlyContinue; if \\($proc\\) { \"killing PID $p \\($\\($proc.ProcessName\\)\\)\"; Stop-Process -Id $p -Force } })"
+      "PowerShell($c = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue; foreach \\($p in \\($c.OwningProcess | Select-Object -Unique\\)\\) { $proc = Get-Process -Id $p -ErrorAction SilentlyContinue; if \\($proc\\) { \"killing PID $p \\($\\($proc.ProcessName\\)\\)\"; Stop-Process -Id $p -Force } })",
+      "Bash(docker --version)",
+      "Bash(docker info *)"
     ]
   }
 }
