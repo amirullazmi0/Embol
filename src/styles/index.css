@@ -1,0 +1,71 @@
+:root {
+  --orange: #ff751f;
+  --black: #000000;
+  --offwhite: #fffdfc;
+
+  --nav-h: 84px;
+  --gutter: clamp(20px, 5vw, 68px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Offset for the sticky navbar lives on .section (scroll-margin-top) only —
+   adding scroll-padding-top here too would double it. */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--offwhite);
+  color: var(--black);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* The oversized wordmark used at the bottom of every section.
+   11vw is tuned so "PEYEUMIN AJAH" spans the width between the gutters
+   without wrapping or overflowing, at any viewport size. */
+.wordmark {
+  margin: 0;
+  font-size: clamp(30px, 11vw, 200px);
+  line-height: 0.84;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--black);
+}
+
+/* --nav-real is measured from the rendered bar by <Navbar>; --nav-h is the
+   CSS-declared fallback used before that first measurement lands. */
+/* Smaller running variant used on Product and Contact. */
+.wordmark--sm {
+  font-size: clamp(24px, 7vw, 128px);
+  /* Shorter track, so it needs less time to keep a similar travel speed. */
+  --marquee-duration: 18s;
+}
+
+.section {
+  scroll-margin-top: var(--nav-real, var(--nav-h));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

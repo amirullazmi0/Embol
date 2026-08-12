@@ -1,0 +1,514 @@
+/* ---------- Navbar ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  /* No right padding: the pill runs off the right edge by design. */
+  padding: 0 0 0 var(--gutter);
+  background: var(--orange);
+  transition: background 0.35s ease;
+}
+
+/* On the off-white sections the bar blends into the page. */
+.nav[data-tone='light'] {
+  background: var(--offwhite);
+}
+
+.nav__brand {
+  margin: 0;
+  font-size: clamp(12px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.nav__menu {
+  /* Height is fixed so the radius can be exactly half of it. A 999px radius
+     gets scaled down by the browser to fit, and how far depends on the
+     rendered height — which is what left the cap looking cut off. */
+  --pill-h: 54px;
+
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.2vw, 34px);
+  height: var(--pill-h);
+  margin: 0;
+  padding: 0 clamp(18px, 3vw, 46px);
+  list-style: none;
+  background: var(--black);
+  /* Fully round on the left, square where it bleeds off the right. */
+  border-radius: calc(var(--pill-h) / 2) 0 0 calc(var(--pill-h) / 2);
+}
+
+.nav__link {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: clamp(12px, 1.5vw, 21px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--offwhite);
+  transition: color 0.2s ease;
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  color: var(--orange);
+}
+
+.nav__link[aria-current='true'] {
+  color: var(--orange);
+}
+
+/* ---------- Home ---------- */
+.home {
+  background: var(--orange);
+  padding-top: clamp(16px, 2.5vw, 30px);
+  padding-bottom: clamp(28px, 5vw, 70px);
+}
+
+.home__figure {
+  margin: 0 var(--gutter);
+  overflow: hidden;
+}
+
+/* Deck page 1 crops the hero to roughly 2.6:1 between the gutters. */
+.home__figure img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.6 / 1;
+  min-height: 200px;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+/* Runs full-bleed: the gutter is dropped so the text can leave the screen. */
+.home__title {
+  margin-top: clamp(16px, 3vw, 42px);
+}
+
+/* ---------- Marquee ---------- */
+.marquee {
+  overflow: hidden;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide var(--marquee-duration, 26s) linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__item {
+  padding-right: 0.28em;
+  white-space: nowrap;
+}
+
+@keyframes marquee-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Half the track = two identical copies, so the loop is invisible. */
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- About ---------- */
+.about {
+  background: var(--offwhite);
+}
+
+.about__head {
+  position: relative;
+}
+
+/* Orange behind the banner as well, so the sub-pixel seam left by the
+   fractional aspect-ratio height never shows the off-white page through. */
+.about__intro {
+  background: var(--orange);
+}
+
+/* Full-bleed, ~3:1, as on deck pages 2 and 3.
+   The explicit width matters: without it, max-height would drive the
+   aspect ratio backwards and shrink the banner away from the right edge. */
+/* Base = deck page 3: shorter band, carrying the logo card.
+   The photo is placed explicitly instead of with object-fit, because
+   object-position is measured against the hidden overflow — which differs
+   between two boxes of different height, so the same percentage lands in a
+   different spot. With an explicit width and left, both banners share one
+   horizontal framing and only --img-top is tuned per banner. */
+.about__banner {
+  --img-zoom: 218%; /* photo width, relative to the banner width */
+  --img-x: -15.7%; /* lower = subject further right */
+  --img-top: -18%; /* less negative = photo lower, shows more of the face */
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  min-height: 190px;
+  max-height: 440px;
+  overflow: hidden;
+}
+
+/* The intro banner is the taller one; horizontal framing stays identical. */
+.about__intro .about__banner {
+  --img-top: -7.5%;
+  aspect-ratio: 2.2 / 1;
+  max-height: 560px;
+}
+
+.about__banner img {
+  position: absolute;
+  left: var(--img-x);
+  top: var(--img-top);
+  width: var(--img-zoom);
+  height: auto;
+  max-width: none; /* beats the global img { max-width: 100% } */
+}
+
+/* Desktop: a white card punched into the left edge of the banner. */
+.about__logo {
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 1.6vw, 22px);
+  background: var(--offwhite);
+}
+
+.about__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.about__body {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 76px) var(--gutter) clamp(42px, 7vw, 90px);
+}
+
+.about__body p {
+  margin: 0 0 clamp(16px, 2vw, 26px);
+  font-size: clamp(13px, 1.25vw, 17px);
+  line-height: 1.65;
+  text-align: justify;
+  text-transform: uppercase;
+}
+
+.about__body p:last-child {
+  margin-bottom: 0;
+}
+
+.about__body strong {
+  font-weight: 700;
+}
+
+.about__band {
+  background: var(--orange);
+  padding: clamp(18px, 3vw, 38px) 0 clamp(22px, 4vw, 52px);
+  /* Rides 2px over the banner to swallow the pale seam at its bottom edge. */
+  position: relative;
+  margin-top: -2px;
+}
+
+/* ---------- Back to top ---------- */
+.to-top {
+  position: fixed;
+  right: clamp(16px, 3vw, 38px);
+  bottom: clamp(16px, 3vw, 38px);
+  z-index: 60;
+  width: clamp(46px, 5vw, 58px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid var(--offwhite);
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--orange);
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 28%);
+
+  /* Hidden until the visitor has scrolled past the hero. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.to-top[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.to-top:hover,
+.to-top:focus-visible {
+  transform: translateY(-4px);
+}
+
+.to-top svg {
+  width: 46%;
+  height: 46%;
+}
+
+/* ---------- Product ---------- */
+.product {
+  background: var(--offwhite);
+  padding-bottom: clamp(28px, 5vw, 70px);
+}
+
+/* Deck page 4: photo takes about a third of the content width, copy sits
+   vertically centred against it. */
+.product__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 48px);
+  align-items: center;
+  padding: clamp(24px, 4vw, 44px) var(--gutter) clamp(30px, 5vw, 60px);
+}
+
+.product__photo {
+  margin: 0;
+}
+
+.product__photo img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 41 / 40;
+  object-fit: cover;
+}
+
+.product__price {
+  margin: 0 0 clamp(18px, 3vw, 34px);
+  font-size: clamp(15px, 1.9vw, 26px);
+  text-transform: uppercase;
+}
+
+.product__note {
+  margin: 0;
+  font-size: clamp(12px, 1.35vw, 19px);
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+/* Full-bleed, like the Home wordmark, so the text can run off both edges. */
+.product__title {
+  margin-top: clamp(10px, 2vw, 24px);
+}
+
+/* ---------- Contact ---------- */
+.contact {
+  background: var(--orange);
+  padding-bottom: clamp(28px, 5vw, 70px);
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+  padding: clamp(40px, 8vw, 108px) var(--gutter) clamp(40px, 8vw, 100px);
+}
+
+.contact__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 2vw, 26px);
+  text-align: center;
+  color: var(--black);
+  text-decoration: none;
+}
+
+.contact__item svg {
+  width: clamp(48px, 6.5vw, 92px);
+  height: clamp(48px, 6.5vw, 92px);
+  transition: transform 0.25s ease;
+}
+
+.contact__item:hover svg,
+.contact__item:focus-visible svg {
+  transform: translateY(-6px);
+}
+
+.contact__label {
+  font-size: clamp(11px, 1.15vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  max-width: 22ch;
+}
+
+.contact__title {
+  margin-top: clamp(10px, 2vw, 24px);
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  :root {
+    --nav-h: 76px;
+  }
+
+  .product__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 44px);
+  }
+}
+
+/* ---------- Small tablet / large phone ---------- */
+@media (max-width: 768px) {
+  :root {
+    --nav-h: 70px;
+  }
+
+  /* The logo leaves the banner and becomes a badge overlapping its edge. */
+  .about__logo {
+    position: static;
+    height: auto;
+    width: clamp(116px, 30vw, 170px);
+    margin: clamp(-46px, -8vw, -30px) auto 0;
+    /* The logo PNG is a white square whose corners reach past a 50% radius,
+       so both the badge and the image itself are rounded. */
+    padding: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgb(0 0 0 / 12%);
+  }
+
+  .about__logo img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .about__body {
+    padding-top: clamp(26px, 6vw, 44px);
+  }
+
+  .about__body p {
+    text-align: left;
+  }
+
+  .product__grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .product__photo img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .contact__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact__item svg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .contact__label {
+    font-size: 13px;
+    max-width: 28ch;
+  }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 560px) {
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    height: auto;
+    padding: 12px 0 0 0;
+    gap: 10px;
+  }
+
+  .nav__brand {
+    padding: 0 var(--gutter);
+    font-size: 13px;
+  }
+
+  .nav__menu {
+    --pill-h: 46px;
+
+    justify-content: center;
+    margin-left: var(--gutter);
+    padding: 0 14px;
+  }
+
+  /* 2.6:1 and 3:1 get too letterboxed on a phone, so both open up. */
+  .home__figure img {
+    aspect-ratio: 3 / 2;
+  }
+
+  /* A 3:2 box is taller than the photo at 218%, so the zoom goes up to keep
+     it covered; --img-x is re-derived to hold the same subject framing. */
+  .about__banner,
+  .about__intro .about__banner {
+    --img-zoom: 320%;
+    --img-x: -46.5%;
+    --img-top: -8%;
+    aspect-ratio: 3 / 2;
+    max-height: none;
+  }
+}
+
+/* ---------- Small phone ---------- */
+@media (max-width: 400px) {
+  .nav__menu {
+    --pill-h: 42px;
+
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .nav__link {
+    font-size: 11px;
+  }
+}
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+    padding-left: var(--gutter);
+  }
+
+  .contact__item svg,
+  .to-top,
+  .nav {
+    transition: none;
+  }
+
+  .to-top:hover,
+  .to-top:focus-visible {
+    transform: translateY(0);
+  }
+
+  .contact__item:hover svg,
+  .contact__item:focus-visible svg {
+    transform: none;
+  }
+}
